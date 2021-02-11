@@ -1,6 +1,15 @@
-import * as mongoose from 'mongoose';
+import IVersionableDocument from '../versionable/IVersionableDocument';
 
-export default interface IExaminationModel extends mongoose.Document {
+export default interface IExaminationModel extends IVersionableDocument {
     subject: string;
-    questionset: string;
+    questionset: [questionset];
 }
+
+type questionset = {
+    question: string;
+    firstOption: string;
+    secondOption: string;
+    thirdOption: string;
+    forthOption: string;
+    correctOption: string;
+};

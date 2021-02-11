@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-// import { DocumentQuery, Query } from 'mongoose';
 
 export default class ResultRepository<D extends mongoose.Document, M extends mongoose.Model<D>> {
     private model: M;

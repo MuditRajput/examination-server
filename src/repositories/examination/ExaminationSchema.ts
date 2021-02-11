@@ -1,6 +1,6 @@
-import * as mongoose from 'mongoose';
+import { VersionableSchema } from '../versionable/VersionableSchema';
 
-export default class ExaminationSchema extends mongoose.Schema {
+export default class ExaminationSchema extends VersionableSchema {
     constructor(collections: any) {
         const examinationOptions = Object.assign({
             subject: {
@@ -9,7 +9,7 @@ export default class ExaminationSchema extends mongoose.Schema {
             },
             questionSet: {
                 required: false,
-                type: Object
+                type: Array
             }
         });
         super(examinationOptions, collections);

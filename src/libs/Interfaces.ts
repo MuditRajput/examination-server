@@ -15,3 +15,17 @@ type GetProduct = {
     write: string[],
     delete: string[]
 };
+
+export interface ISeedExamination {
+    subject: string;
+    questionSet: questions[];
+}
+
+type questions = {
+    question: string,
+    firstOption: string,
+    secondOption: string,
+    thirdOption: string,
+    forthOption: string,
+    correctOption: string
+};

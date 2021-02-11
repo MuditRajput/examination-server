@@ -1,12 +1,14 @@
 import UserRepository from '../repositories/user/UserRepository';
 import ResultRepository from '../repositories/result/ResultRepository';
+import ExaminationRepository from '../repositories/examination/ExaminationRepository';
 import * as bcrypt from 'bcrypt';
-import { seedData1 } from './constants';
+import { seedData1, seedExaminationData } from './constants';
 import { resultModel } from '../repositories/result/ResultModel';
 
 
 const userRepository: UserRepository = new UserRepository();
 const resultRepository = new ResultRepository(resultModel);
+const examinationRepository = new ExaminationRepository();
 export default async function seed() {
     const count = await userRepository.count({});
     if (count === 0) {
@@ -17,6 +19,17 @@ export default async function seed() {
         userRepository.create(seedData1);
         } catch (err) {
         console.log(err);
+        }
+    }
+}
+
+export async function seedExamination() {
+    const examCount = await examinationRepository.countExams();
+    if (examCount === 0) {
+        try {
+            await examinationRepository.create(seedExaminationData);
+        } catch (err) {
+            console.log(err);
         }
     }
 }
