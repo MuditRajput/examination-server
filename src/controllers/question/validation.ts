@@ -1,11 +1,24 @@
 const Validation = {
     create: {
-        subject: {
+        originalId: {
             required: true,
             string: true,
             in: ['body'],
             errorMessage: 'Subject is invalid'
         },
+        questionList: {
+            required: true,
+            in: ['body'],
+            errorMessage: 'QuestionList is invalid'
+        }
+    },
+    get: {
+        originalId: {
+            required: true,
+            string: true,
+            in: ['body'],
+            errorMessage: 'questionSet is Invalid'
+        }
     },
     delete: {
         id: {
@@ -17,7 +30,12 @@ const Validation = {
     },
     update: {
         originalId: {
-            required: true,
+            required: false,
+            string: true,
+            in: ['body']
+        },
+        questionId: {
+            required: false,
             string: true,
             in: ['body']
         },

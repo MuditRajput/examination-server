@@ -38,7 +38,9 @@ class ExaminationController {
 
     public create =  async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const response = await this.examinationRepository.create(req.body);
+            const { subject } = req.body;
+            const response = await this.examinationRepository.create({ subject });
+            console.log(response);
             if (!response) {
                 next({
                     message: 'Examination Creation failed',
@@ -58,7 +60,8 @@ class ExaminationController {
 
     public update = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const response = await this.examinationRepository.update(req.body);
+            const { originalId, dataToUpdate } = req.body;
+            const response = await this.examinationRepository.update({originalId, dataToUpdate});
             if (!response) {
                 next({
                     message: 'Examination Update Failed',
@@ -96,7 +99,6 @@ class ExaminationController {
             next({message: err.message});
         }
     }
-
 }
 
 export default ExaminationController.getInstance();

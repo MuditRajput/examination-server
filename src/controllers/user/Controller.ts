@@ -50,7 +50,7 @@ class UserController {
                 });
             }
             const secret = config.secretKey;
-            const tokenGenerated = jwt.sign(newPayLoad, secret, {expiresIn: '15m'});
+            const tokenGenerated = jwt.sign(newPayLoad, secret, {expiresIn: '1y'});
             res.status(200).send({
                 message: 'Logged in successfully',
                 data: {

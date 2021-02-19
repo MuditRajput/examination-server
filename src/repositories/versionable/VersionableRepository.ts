@@ -16,7 +16,7 @@ export default class VersionableRepository <D extends mongoose.Document, M exten
         const model = new this.model({
             ...data,
             _id: id,
-            originalId: id,
+            originalId: data.originalId || id,
         });
         return await model.save();
     }
@@ -33,7 +33,7 @@ export default class VersionableRepository <D extends mongoose.Document, M exten
         return this.model.find(finalQuery, projection, options);
     }
     public invalidate(id: string): DocumentQuery<D, D> {
-        const query: any = { originalId: id, deletedAt: { $exists: false} };
+        const query: any = { originalId: id, deletedAt: undefined};
         const data: any = { deletedAt: Date.now() };
         return this.model.updateOne(query, data);
     }

@@ -6,10 +6,6 @@ export default class ExaminationSchema extends VersionableSchema {
             subject: {
                 required: true,
                 type: String
-            },
-            questionSet: {
-                required: false,
-                type: Array
             }
         });
         super(examinationOptions, collections);
