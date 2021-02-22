@@ -13,11 +13,11 @@ const Validation = {
         }
     },
     get: {
-        originalId: {
+        id: {
             required: true,
             string: true,
-            in: ['body'],
-            errorMessage: 'questionSet is Invalid'
+            in: ['params'],
+            errorMessage: 'id is Invalid'
         }
     },
     delete: {
@@ -30,11 +30,6 @@ const Validation = {
     },
     update: {
         originalId: {
-            required: false,
-            string: true,
-            in: ['body']
-        },
-        questionId: {
             required: false,
             string: true,
             in: ['body']

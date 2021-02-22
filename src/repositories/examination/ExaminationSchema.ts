@@ -6,6 +6,14 @@ export default class ExaminationSchema extends VersionableSchema {
             subject: {
                 required: true,
                 type: String
+            },
+            description: {
+                required: false,
+                type: String
+            },
+            maximumMarks: {
+                required: false,
+                type: String
             }
         });
         super(examinationOptions, collections);

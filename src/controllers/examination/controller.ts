@@ -38,8 +38,8 @@ class ExaminationController {
 
     public create =  async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { subject } = req.body;
-            const response = await this.examinationRepository.create({ subject });
+            const { subject, description, maximumMarks } = req.body;
+            const response = await this.examinationRepository.create({ subject, description, maximumMarks });
             console.log(response);
             if (!response) {
                 next({

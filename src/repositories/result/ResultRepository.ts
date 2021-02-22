@@ -1,9 +1,10 @@
 import * as mongoose from 'mongoose';
+import { resultModel } from './ResultModel';
 
-export default class ResultRepository<D extends mongoose.Document, M extends mongoose.Model<D>> {
-    private model: M;
-    constructor(model) {
-        this.model = model;
+export default class ResultRepository<D extends mongoose.Document> {
+    private model;
+    constructor() {
+        this.model = resultModel;
     }
 
     public async create(result): Promise<D> {

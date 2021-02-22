@@ -7,17 +7,13 @@ export default class ResultSchema extends mongoose.Schema {
                 required: true,
                 type: String
             },
-            physics: {
-                required: false,
-                type: Number
+            questionSet: {
+                required: true,
+                type: String
             },
-            chemistry: {
-                required: false,
-                type: Number
-            },
-            maths: {
-                required: false,
-                type: Number
+            result: {
+                required: true,
+                type: Array
             }
         });
         super(resultOptions, collections);

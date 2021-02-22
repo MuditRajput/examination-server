@@ -1,10 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import QuestionRepository from '../../repositories/questions/QuestionRepository';
+import ResultRepository from '../../repositories/result/ResultRepository';
 
 class QuestionController {
     private questionRepository;
+    private resultRepository;
     constructor() {
         this.questionRepository = new QuestionRepository();
+        this.resultRepository = new ResultRepository();
     }
 
     static instance: QuestionController;
@@ -18,8 +21,8 @@ class QuestionController {
 
     public get = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { originalId } = req.body;
-            const selectedQuestions = await this.questionRepository.find({questionSet: originalId});
+            const { id } = req.params;
+            const selectedQuestions = await this.questionRepository.find({questionSet: id});
             if (!selectedQuestions) {
                 next({
                     message: 'No Examination Found',
@@ -29,9 +32,7 @@ class QuestionController {
             }
             res.status(200).send({
                 message: 'Examination fetched successfully',
-                data: {
-                    questions: selectedQuestions
-                },
+                data: selectedQuestions,
                 status: 'success'
             });
         } catch (err) {
@@ -70,8 +71,8 @@ class QuestionController {
 
     public update = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { questionId, dataToUpdate } = req.body;
-            const response = await this.questionRepository.update({originalId: questionId, dataToUpdate});
+            const { originalId, dataToUpdate } = req.body;
+            const response = await this.questionRepository.update({originalId, dataToUpdate});
             if (!response) {
                 next({
                     message: 'Examination Update Failed',
@@ -114,11 +115,10 @@ class QuestionController {
     }
 
     public submitAnswers = async(req: Request, res: Response, next: NextFunction) => {
-        const { answersList = [] } = req.body;
+        const { answersList = [], originalId: userId, questionSet } = req.body;
         const resultList = [];
         answersList.forEach(async({ originalId, answer }) => {
             const response = await this.questionRepository.getOne({originalId});
-            console.log(response);
             if (!response) {
                 next({
                     message: 'No question found',
@@ -127,13 +127,26 @@ class QuestionController {
                 });
             }
             if (answer === response.correctOption) {
-                resultList.push(true);
+                resultList.push({originalId, result: true});
                 return;
             }
-            resultList.push(false);
-            console.log(resultList);
-            res.send('hello');
+            resultList.push({originalId, result: false});
         });
+        setTimeout(async() => {
+            const resultResponse = await this.resultRepository.create({result: resultList, originalId: userId, questionSet});
+            if (!resultResponse) {
+                next({
+                    message: 'Result Not Saved',
+                    error: 'Bad Request',
+                    status: 400
+                });
+            }
+            res.status(200).send({
+                message: 'Result Fetched Successfully',
+                data: resultResponse,
+                status: 'success'
+            });
+        }, 100);
     }
 }
 

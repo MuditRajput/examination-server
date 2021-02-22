@@ -3,11 +3,10 @@ import ResultRepository from '../repositories/result/ResultRepository';
 import ExaminationRepository from '../repositories/examination/ExaminationRepository';
 import * as bcrypt from 'bcrypt';
 import { seedData1, seedExaminationData } from './constants';
-import { resultModel } from '../repositories/result/ResultModel';
 
 
 const userRepository: UserRepository = new UserRepository();
-const resultRepository = new ResultRepository(resultModel);
+const resultRepository = new ResultRepository();
 const examinationRepository = new ExaminationRepository();
 export default async function seed() {
     const count = await userRepository.count({});
