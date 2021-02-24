@@ -115,38 +115,36 @@ class QuestionController {
     }
 
     public submitAnswers = async(req: Request, res: Response, next: NextFunction) => {
-        const { answersList = [], originalId: userId, questionSet } = req.body;
+        const { answersList = {}, originalId: userId, questionSet } = req.body;
         const resultList = [];
-        answersList.forEach(async({ originalId, answer }) => {
-            const response = await this.questionRepository.getOne({originalId});
-            if (!response) {
-                next({
-                    message: 'No question found',
-                    error: 'Bad request',
-                    status: 400
-                });
-            }
-            if (answer === response.correctOption) {
+        const response = await this.questionRepository.find({questionSet});
+        if (!response) {
+            next({
+                message: 'No question found',
+                error: 'Bad request',
+                status: 400
+            });
+        }
+        response.forEach(async({ originalId, correctOption }) => {
+            if (answersList[originalId] === correctOption) {
                 resultList.push({originalId, result: true});
                 return;
             }
             resultList.push({originalId, result: false});
         });
-        setTimeout(async() => {
-            const resultResponse = await this.resultRepository.create({result: resultList, originalId: userId, questionSet});
-            if (!resultResponse) {
-                next({
-                    message: 'Result Not Saved',
-                    error: 'Bad Request',
-                    status: 400
-                });
-            }
-            res.status(200).send({
-                message: 'Result Fetched Successfully',
-                data: resultResponse,
-                status: 'success'
+        const resultResponse = await this.resultRepository.create({result: resultList, originalId: userId, questionSet});
+        if (!resultResponse) {
+            next({
+                message: 'Result Not Saved',
+                error: 'Bad Request',
+                status: 400
             });
-        }, 100);
+        }
+        res.status(200).send({
+            message: 'Result Fetched Successfully',
+            data: resultResponse,
+            status: 'success'
+        });
     }
 }
 

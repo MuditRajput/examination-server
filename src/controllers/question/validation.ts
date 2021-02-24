@@ -40,6 +40,26 @@ const Validation = {
             isObject: true,
             errorMessage: 'dataToUpdate is required'
         }
+    },
+    submitAnswers: {
+        originalId: {
+            required: true,
+            string: true,
+            in: ['body'],
+            errorMessage: 'originalId is required'
+        },
+        questionSet: {
+            required: true,
+            string: true,
+            in: ['body'],
+            errorMessage: 'questionSet is required'
+        },
+        answersList: {
+            required: false,
+            isObject: true,
+            in: ['body'],
+            errorMessage: 'answersList is Invalid'
+        },
     }
 };
 export default Validation;

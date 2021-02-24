@@ -14,6 +14,6 @@ questionRouter.route('/:id')
     .delete(authMiddleWare('getUsers', 'delete'), validationHandler(Validation.delete), questionController.delete);
 
 questionRouter.route('/submit')
-    .post(questionController.submitAnswers);
+    .post(authMiddleWare('getUsers', 'read'), validationHandler(Validation.submitAnswers), questionController.submitAnswers);
 
 export default questionRouter;
