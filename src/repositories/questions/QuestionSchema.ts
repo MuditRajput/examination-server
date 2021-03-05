@@ -13,7 +13,7 @@ export default class QuestionSchema extends VersionableSchema {
             },
             options: {
                 required: false,
-                type: Array
+                type: [String]
             },
             correctOption: {
                 required: false,

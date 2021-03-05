@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { default as hasPermissions } from '../helper';
 import { config } from '../../config';
 import UserRepositories from '../../repositories/user/UserRepository';
+import { permissions } from '../constants';
 
 
 export default (module, permission) => async (req: Request, res: Response, next: NextFunction) => {
@@ -43,6 +44,10 @@ export default (module, permission) => async (req: Request, res: Response, next:
                 status: 403
             });
             return;
+        }
+        res.locals.write = true;
+        if (permissions[module].read.includes(data.role)) {
+            res.locals.write = false;
         }
         if (!hasPermissions(module, data.role, permission)) {
             return next({

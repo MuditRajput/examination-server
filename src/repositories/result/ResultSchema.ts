@@ -13,7 +13,7 @@ export default class ResultSchema extends mongoose.Schema {
             },
             result: {
                 required: true,
-                type: Array
+                type: Object
             }
         });
         super(resultOptions, collections);

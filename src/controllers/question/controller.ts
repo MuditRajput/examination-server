@@ -30,9 +30,11 @@ class QuestionController {
                     status: 400
                 });
             }
+            const { write } = res.locals;
             res.status(200).send({
                 message: 'Examination fetched successfully',
                 data: selectedQuestions,
+                write,
                 status: 'success'
             });
         } catch (err) {
@@ -90,12 +92,33 @@ class QuestionController {
         }
     }
 
+    public deleteOne = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { id } = req.params;
+            const response = await this.questionRepository.delete(id);
+            if (!response) {
+                next({
+                    message: 'Examination delete Failed',
+                    error: 'Bad Request',
+                    status: 400
+                });
+            }
+            res.status(200).send({
+                message: 'Examination Deleted Successfully',
+                data: {},
+                status: 'success'
+            });
+        } catch (err) {
+            next({message: err.message});
+        }
+    }
+
     public delete = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params;
             const allQuestions = await this.questionRepository.find({ questionSet: id });
             allQuestions.forEach(async(question) => {
-                const response = await this.questionRepository.delete(id);
+                const response = await this.questionRepository.delete(question.originalId);
                 if (!response) {
                     next({
                         message: 'Examination delete Failed',
@@ -115,11 +138,12 @@ class QuestionController {
     }
 
     public submitAnswers = async(req: Request, res: Response, next: NextFunction) => {
-        const { answersList = {}, originalId: userId, questionSet } = req.body;
-        const resultList = [];
+        const { userData: { originalId: userId } } = res.locals;
+        const { answersList = {}, questionSet } = req.body;
+        const resultList = {};
         const response = await this.questionRepository.find({questionSet});
-        if (!response) {
-            next({
+        if (!response.length) {
+            return next({
                 message: 'No question found',
                 error: 'Bad request',
                 status: 400
@@ -127,10 +151,10 @@ class QuestionController {
         }
         response.forEach(async({ originalId, correctOption }) => {
             if (answersList[originalId] === correctOption) {
-                resultList.push({originalId, result: true});
+                resultList[originalId] = true;
                 return;
             }
-            resultList.push({originalId, result: false});
+                resultList[originalId] = false;
         });
         const resultResponse = await this.resultRepository.create({result: resultList, originalId: userId, questionSet});
         if (!resultResponse) {

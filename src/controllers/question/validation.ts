@@ -42,12 +42,6 @@ const Validation = {
         }
     },
     submitAnswers: {
-        originalId: {
-            required: true,
-            string: true,
-            in: ['body'],
-            errorMessage: 'originalId is required'
-        },
         questionSet: {
             required: true,
             string: true,
@@ -55,7 +49,7 @@ const Validation = {
             errorMessage: 'questionSet is required'
         },
         answersList: {
-            required: false,
+            required: true,
             isObject: true,
             in: ['body'],
             errorMessage: 'answersList is Invalid'
