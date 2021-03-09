@@ -26,9 +26,11 @@ class ExaminationController {
                     status: 400
                 });
             }
+            const { write } = res.locals;
             res.status(200).send({
                 message: 'Examination fetched successfully',
                 data: response,
+                write,
                 status: 'success'
             });
         } catch (err) {
