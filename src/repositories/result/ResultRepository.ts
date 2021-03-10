@@ -1,26 +1,26 @@
 import * as mongoose from 'mongoose';
+import VersionableRepository from '../versionable/VersionableRepository';
+import IResultModel from './IResultModel';
 import { resultModel } from './ResultModel';
 
-export default class ResultRepository<D extends mongoose.Document> {
-    private model;
+export default class ResultRepository extends VersionableRepository<IResultModel, mongoose.Model<IResultModel>> {
     constructor() {
-        this.model = resultModel;
+        super(resultModel);
     }
 
-    public async create(result): Promise<D> {
-        const model = new this.model(result);
-        return await model.save();
+    public async resultCreate(result) {
+        return super.create(result);
     }
 
-    public async findOne(originalId): Promise<D> {
-        return await this.model.findOne(originalId);
+    public async getOne(query) {
+        return super.findOne(query);
     }
 
+    public async getAll(userId) {
+        return super.findAll({userId}, {}, {});
+    }
 
-    public async update(result): Promise<D> {
-        const { originalId, ...rest } = result;
-        const previous = this.findOne(originalId);
-        const newResult = {...previous, ...rest};
-        return await this.create(newResult);
+    public async resultUpdate(result) {
+        return super.update(result);
     }
 }

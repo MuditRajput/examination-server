@@ -1,9 +1,9 @@
-import * as mongoose from 'mongoose';
+import { VersionableSchema } from '../versionable/VersionableSchema';
 
-export default class ResultSchema extends mongoose.Schema {
+export default class ResultSchema extends VersionableSchema {
     constructor(collections: any) {
         const resultOptions = Object.assign({
-            originalId: {
+            userId: {
                 required: true,
                 type: String
             },

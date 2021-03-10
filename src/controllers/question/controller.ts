@@ -156,7 +156,7 @@ class QuestionController {
             }
                 resultList[originalId] = false;
         });
-        const resultResponse = await this.resultRepository.create({result: resultList, originalId: userId, questionSet});
+        const resultResponse = await this.resultRepository.resultCreate({result: resultList, userId, questionSet});
         if (!resultResponse) {
             next({
                 message: 'Result Not Saved',

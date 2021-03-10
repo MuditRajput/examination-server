@@ -1,8 +1,7 @@
-import * as mongoose from 'mongoose';
+import IVersionableDocument from '../versionable/IVersionableDocument';
 
-export default interface IResultModel extends mongoose.Document {
-    _id: string;
-    originalId: string;
+export default interface IResultModel extends IVersionableDocument {
+    userId: string;
     questionSet: string;
     result: object;
 }

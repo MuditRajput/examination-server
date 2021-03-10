@@ -42,7 +42,6 @@ class ExaminationController {
         try {
             const { subject, description, maximumMarks } = req.body;
             const response = await this.examinationRepository.create({ subject, description, maximumMarks });
-            console.log(response);
             if (!response) {
                 next({
                     message: 'Examination Creation failed',

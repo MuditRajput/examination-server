@@ -43,7 +43,7 @@ export default (Validation) => (req: Request, res: Response, next: NextFunction 
                 error.push(a);
                 return;
             }
-            if (inObject.isObject && (!(typeof value === 'object') || !(Object.entries(value).length))) {
+            if (inObject.required && inObject.isObject && (!(typeof value === 'object') || !(Object.entries(value).length))) {
                 a.key = keys;
                 a.location = inside;
                 a.errorMessage = `${keys} is invalid`;

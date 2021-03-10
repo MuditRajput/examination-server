@@ -49,7 +49,7 @@ const Validation = {
             errorMessage: 'questionSet is required'
         },
         answersList: {
-            required: true,
+            required: false,
             isObject: true,
             in: ['body'],
             errorMessage: 'answersList is Invalid'
