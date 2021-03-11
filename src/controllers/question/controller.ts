@@ -151,10 +151,10 @@ class QuestionController {
         }
         response.forEach(async({ originalId, correctOption }) => {
             if (answersList[originalId] === correctOption) {
-                resultList[originalId] = true;
+                resultList[originalId] = [true, correctOption, answersList[originalId]];
                 return;
             }
-                resultList[originalId] = false;
+            resultList[originalId] = [false, correctOption, answersList[originalId]];
         });
         const resultResponse = await this.resultRepository.resultCreate({result: resultList, userId, questionSet});
         if (!resultResponse) {
