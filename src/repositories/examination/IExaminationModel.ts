@@ -4,4 +4,5 @@ export default interface IExaminationModel extends IVersionableDocument {
     subject: string;
     description: string;
     maximumMarks: string;
+    time: string;
 }

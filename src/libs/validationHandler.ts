@@ -57,6 +57,7 @@ export default (Validation) => (req: Request, res: Response, next: NextFunction 
         });
     });
     if (error.length) {
+        next({ message: 'Validation Error'});
         return res.status(400).send(error);
     }
     next ();

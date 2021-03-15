@@ -13,8 +13,12 @@ export default class ExaminationSchema extends VersionableSchema {
             },
             maximumMarks: {
                 required: false,
-                type: String
-            }
+                type: Number
+            },
+            time: {
+                required: true,
+                type: Number
+            },
         });
         super(examinationOptions, collections);
     }

@@ -6,6 +6,21 @@ const Validation = {
             in: ['body'],
             errorMessage: 'Subject is invalid'
         },
+        maximumMarks: {
+            required: false,
+            number: true,
+            in: ['body']
+        },
+        description: {
+            required: false,
+            string: true,
+            in: ['body']
+        },
+        time: {
+            required: true,
+            number: true,
+            in: ['body']
+        },
     },
     delete: {
         id: {
