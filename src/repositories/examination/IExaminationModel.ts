@@ -5,4 +5,5 @@ export default interface IExaminationModel extends IVersionableDocument {
     description: string;
     maximumMarks: string;
     time: string;
+    maxAttempts: string;
 }

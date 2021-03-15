@@ -21,6 +21,11 @@ const Validation = {
             number: true,
             in: ['body']
         },
+        maxAttempts: {
+            required: true,
+            number: true,
+            in: ['body']
+        },
     },
     delete: {
         id: {

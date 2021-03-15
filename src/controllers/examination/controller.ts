@@ -40,8 +40,8 @@ class ExaminationController {
 
     public create =  async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { subject, description, maximumMarks, time } = req.body;
-            const response = await this.examinationRepository.create({ subject, description, maximumMarks, time });
+            const { subject, description, maximumMarks, time, maxAttempts } = req.body;
+            const response = await this.examinationRepository.create({ subject, description, maximumMarks, time, maxAttempts });
             if (!response) {
                 next({
                     message: 'Examination Creation failed',

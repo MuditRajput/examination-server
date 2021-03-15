@@ -22,6 +22,8 @@ class QuestionController {
     public get = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params;
+            const { userData: { originalId } } = res.locals;
+            const totalAttempts = await this.resultRepository.find({userId: originalId});
             const selectedQuestions = await this.questionRepository.find({questionSet: id});
             if (!selectedQuestions) {
                 next({
@@ -34,6 +36,7 @@ class QuestionController {
             res.status(200).send({
                 message: 'Examination fetched successfully',
                 data: selectedQuestions,
+                numberOfAttempts: totalAttempts.length,
                 write,
                 status: 'success'
             });

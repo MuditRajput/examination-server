@@ -19,6 +19,10 @@ export default class ExaminationSchema extends VersionableSchema {
                 required: true,
                 type: Number
             },
+            maxAttempts: {
+                required: true,
+                type: Number
+            },
         });
         super(examinationOptions, collections);
     }

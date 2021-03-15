@@ -20,6 +20,10 @@ export default class ResultRepository extends VersionableRepository<IResultModel
         return super.findAll({userId}, {}, {});
     }
 
+    public find(query) {
+        return super.findAll(query, {}, {});
+    }
+
     public async resultUpdate(result) {
         return super.update(result);
     }
