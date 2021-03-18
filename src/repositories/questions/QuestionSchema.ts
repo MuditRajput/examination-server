@@ -17,7 +17,7 @@ export default class QuestionSchema extends VersionableSchema {
             },
             correctOption: {
                 required: false,
-                type: String
+                type: [String]
             }
         });
         super(questionOptions, collections);

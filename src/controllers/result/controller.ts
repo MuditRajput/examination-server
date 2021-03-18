@@ -62,7 +62,7 @@ class ResultController {
             const { id } = req.body;
             const response = await this.resultRepository.getOne({ originalId: id });
             if (!response) {
-                next({
+                return next({
                     message: 'Result Not Found',
                     error: 'Bad Request',
                     status: 400
