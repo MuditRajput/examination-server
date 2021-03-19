@@ -27,6 +27,8 @@ export const seedData1 = {
     password: 'Qwerty@1'
 };
 
+export const attemptTimes = {};
+
 export const seedExaminationData: ISeedExamination = {
     subject: 'physics',
     questionSet: [{

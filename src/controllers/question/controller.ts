@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import QuestionRepository from '../../repositories/questions/QuestionRepository';
 import ResultRepository from '../../repositories/result/ResultRepository';
+import { attemptTimes } from '../../libs/constants';
 
 class QuestionController {
     private questionRepository;
@@ -22,8 +23,10 @@ class QuestionController {
     public get = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params;
+            const { timeLimit, submitted } = req.body;
             const { userData: { originalId } } = res.locals;
-            const totalAttempts = await this.resultRepository.find({userId: originalId});
+            let timeLeft = 0;
+            const totalAttempts = await this.resultRepository.find({userId: originalId, questionSet: id});
             const selectedQuestions = await this.questionRepository.find({questionSet: id});
             if (!selectedQuestions) {
                 next({
@@ -32,11 +35,20 @@ class QuestionController {
                     status: 400
                 });
             }
+            if (submitted === 'false') {
+                if (attemptTimes[originalId]) {
+                    timeLeft = (attemptTimes[originalId] >= Date.now()) ? (attemptTimes[originalId] - Date.now()) : 0;
+                } else {
+                    timeLeft = timeLimit * 60000;
+                    attemptTimes[originalId] = (Date.now() + (timeLimit * 60000));
+                }
+            }
             const { write } = res.locals;
             res.status(200).send({
                 message: 'Examination fetched successfully',
                 data: selectedQuestions,
                 numberOfAttempts: totalAttempts.length,
+                timeLeft,
                 write,
                 status: 'success'
             });
@@ -149,6 +161,7 @@ class QuestionController {
         const { userData: { originalId: userId } } = res.locals;
         const { answersList = {}, questionSet } = req.body;
         const resultList = {};
+        delete attemptTimes[userId];
         const response = await this.questionRepository.find({questionSet});
         if (!response.length) {
             return next({
@@ -158,8 +171,8 @@ class QuestionController {
             });
         }
         const compareArrays = (firstArray, secondArray) => {
-            const comparision = firstArray.map((element) => {
-                if (secondArray.includes(element)) {
+            const comparision = secondArray.map((element) => {
+                if ( firstArray && [...firstArray].includes(element)) {
                     return true;
                 }
                 return false;

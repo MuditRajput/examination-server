@@ -18,6 +18,18 @@ const Validation = {
             string: true,
             in: ['params'],
             errorMessage: 'id is Invalid'
+        },
+        timeLimit: {
+            required: false,
+            number: true,
+            in: ['query'],
+            default: 0,
+        },
+        submitted: {
+            required: false,
+            string: true,
+            in: ['query'],
+            default: true
         }
     },
     delete: {
