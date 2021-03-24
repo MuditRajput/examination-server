@@ -5,4 +5,5 @@ export default interface IQuestionModel extends IVersionableDocument {
     question: string;
     options: string[];
     correctOption: string[];
+    marks: string;
 }

@@ -1,10 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import ExaminationRepository from '../../repositories/examination/ExaminationRepository';
+import QuestionRepository from '../../repositories/questions/QuestionRepository';
 
 class ExaminationController {
     private examinationRepository;
+    private questionRepository;
     constructor() {
         this.examinationRepository = new ExaminationRepository();
+        this.questionRepository = new QuestionRepository();
     }
 
     static instance: ExaminationController;
@@ -26,10 +29,24 @@ class ExaminationController {
                     status: 400
                 });
             }
+            const questions = await this.questionRepository.find({});
+            const finalResponse = response.map(({ originalId, subject, description, time, maxAttempts }) => {
+                let maximumMarks = 0;
+                if (questions.length) {
+                    questions.forEach(({ questionSet, marks }) => {
+                        if (questionSet === originalId) {
+                            console.log(questionSet, marks);
+                            maximumMarks = maximumMarks + marks;
+                        }
+                    });
+                }
+                console.log(maximumMarks);
+                return {subject, description, time, maxAttempts, originalId, maximumMarks};
+            });
             const { write } = res.locals;
             res.status(200).send({
                 message: 'Examination fetched successfully',
-                data: response,
+                data: finalResponse,
                 write,
                 status: 'success'
             });
@@ -40,8 +57,8 @@ class ExaminationController {
 
     public create =  async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { subject, description, maximumMarks, time, maxAttempts } = req.body;
-            const response = await this.examinationRepository.create({ subject, description, maximumMarks, time, maxAttempts });
+            const { subject, description, time, maxAttempts } = req.body;
+            const response = await this.examinationRepository.create({ subject, description, time, maxAttempts });
             if (!response) {
                 next({
                     message: 'Examination Creation failed',

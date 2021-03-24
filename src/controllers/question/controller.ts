@@ -1,14 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
 import QuestionRepository from '../../repositories/questions/QuestionRepository';
 import ResultRepository from '../../repositories/result/ResultRepository';
-import { attemptTimes } from '../../libs/constants';
+import ExamprogressRepository from '../../repositories/examprogress/ExamprogressRepository';
 
 class QuestionController {
     private questionRepository;
     private resultRepository;
+    private examprogressRepository;
     constructor() {
         this.questionRepository = new QuestionRepository();
         this.resultRepository = new ResultRepository();
+        this.examprogressRepository = new ExamprogressRepository();
     }
 
     static instance: QuestionController;
@@ -26,26 +28,43 @@ class QuestionController {
             const { timeLimit, submitted } = req.body;
             const { userData: { originalId } } = res.locals;
             let timeLeft = 0;
+            const progressData = await this.examprogressRepository.getOne({originalId});
+            if (progressData && !(progressData.questionSet === id)) {
+                return next({
+                    message: 'You have active attempt',
+                    error: 'Bad Request',
+                    status: 400
+                });
+            }
             const totalAttempts = await this.resultRepository.find({userId: originalId, questionSet: id});
             const selectedQuestions = await this.questionRepository.find({questionSet: id});
-            if (!selectedQuestions) {
-                next({
-                    message: 'No Examination Found',
+            if (!selectedQuestions || !selectedQuestions.length) {
+                return next({
+                    message: 'No questions Found',
                     error: 'Bad Request',
                     status: 400
                 });
             }
             if (submitted === 'false') {
-                if (attemptTimes[originalId]) {
-                    timeLeft = (attemptTimes[originalId] >= Date.now()) ? (attemptTimes[originalId] - Date.now()) : 0;
+                if (progressData) {
+                    timeLeft = (progressData.timeLeft >= Date.now()) ? (progressData.timeLeft - Date.now()) : 0;
                 } else {
                     timeLeft = timeLimit * 60000;
-                    attemptTimes[originalId] = (Date.now() + (timeLimit * 60000));
+                    const response = await this.examprogressRepository.create({
+                        questionSet: id, originalId, timeLeft: (Date.now() + (timeLimit * 60000))
+                    });
+                    if (!response) {
+                        next({
+                            message: 'Time setting failed',
+                            error: 'Bad Request',
+                            status: 400
+                        });
+                    }
                 }
             }
             const { write } = res.locals;
             res.status(200).send({
-                message: 'Examination fetched successfully',
+                message: 'Questions fetched successfully',
                 data: selectedQuestions,
                 numberOfAttempts: totalAttempts.length,
                 timeLeft,
@@ -72,8 +91,6 @@ class QuestionController {
                     });
                 }
                 return questionResponse;
-
-
             });
             res.status(200).send({
                 message: 'Examination Created Successfully',
@@ -161,9 +178,9 @@ class QuestionController {
         const { userData: { originalId: userId } } = res.locals;
         const { answersList = {}, questionSet } = req.body;
         const resultList = {};
-        delete attemptTimes[userId];
+        const progressData = await this.examprogressRepository.delete(userId);
         const response = await this.questionRepository.find({questionSet});
-        if (!response.length) {
+        if (!response.length || !progressData) {
             return next({
                 message: 'No question found',
                 error: 'Bad request',
@@ -179,12 +196,12 @@ class QuestionController {
             });
              return comparision.includes(false) ? false : true;
         };
-        response.forEach(async({ originalId, correctOption }) => {
+        response.forEach(async({ originalId, correctOption, marks }) => {
             if (compareArrays(answersList[originalId], [...correctOption])) {
-                resultList[originalId] = [true, correctOption, answersList[originalId]];
+                resultList[originalId] = [marks, correctOption, answersList[originalId], marks];
                 return;
             }
-            resultList[originalId] = [false, correctOption, answersList[originalId]];
+            resultList[originalId] = [0, correctOption, answersList[originalId], marks];
         });
         const resultResponse = await this.resultRepository.resultCreate({result: resultList, userId, questionSet});
         if (!resultResponse) {

@@ -18,6 +18,10 @@ export default class QuestionSchema extends VersionableSchema {
             correctOption: {
                 required: false,
                 type: [String]
+            },
+            marks: {
+                required: false,
+                type: Number
             }
         });
         super(questionOptions, collections);

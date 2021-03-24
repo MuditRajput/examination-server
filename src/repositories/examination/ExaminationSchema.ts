@@ -11,10 +11,6 @@ export default class ExaminationSchema extends VersionableSchema {
                 required: false,
                 type: String
             },
-            maximumMarks: {
-                required: false,
-                type: Number
-            },
             time: {
                 required: true,
                 type: Number
