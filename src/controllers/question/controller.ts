@@ -80,8 +80,7 @@ class QuestionController {
         try {
             const { questionList, originalId } = req.body;
             await questionList.forEach(async (question) => {
-                const correctOption = question.correctOption.split('|');
-                question = { questionSet: originalId, ...question, correctOption };
+                question = { questionSet: originalId, ...question };
                 const questionResponse = await this.questionRepository.create(question);
                 if (!questionResponse) {
                     next({
@@ -107,10 +106,6 @@ class QuestionController {
     public update = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { originalId, dataToUpdate } = req.body;
-            if (dataToUpdate.correctOption) {
-                const correctOption = dataToUpdate.correctOption.split('|');
-                dataToUpdate.correctOption = correctOption;
-            }
             const response = await this.questionRepository.update({originalId, dataToUpdate});
             if (!response) {
                 next({
