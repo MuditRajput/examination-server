@@ -4,7 +4,7 @@ import Database from './libs/database';
 import * as supertest from 'supertest';
 import { loginTest, profileTest } from './controllers/user/UserController.test';
 import { getResultsTest, getResultTest } from './controllers/result/ResultController.test';
-import { getQuestionsTest } from './controllers/question/QuestionController.test';
+import { getQuestionsTest, createQuestionsTest, updateQuestionsTest, deleteQuestionTest } from './controllers/question/QuestionController.test';
 import { getTraineeTest, createTraineeTest, updateTraineeTest, deleteTraineeTest } from './controllers/trainee/TraineeController.test';
 
 const server = new Server(config);
@@ -62,4 +62,16 @@ describe('GET RESULT API', () => {
 
 describe('GET QUESTIONS API', () => {
   getQuestionsTest(request);
+});
+
+describe('POST QUESTIONS API', () => {
+  createQuestionsTest(request);
+});
+
+describe('PUT QUESTIONS API', () => {
+  updateQuestionsTest(request);
+});
+
+describe('DELETE QUESTIONS API', () => {
+  deleteQuestionTest(request);
 });

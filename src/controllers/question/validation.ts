@@ -42,7 +42,7 @@ const Validation = {
     },
     update: {
         originalId: {
-            required: false,
+            required: true,
             string: true,
             in: ['body']
         },

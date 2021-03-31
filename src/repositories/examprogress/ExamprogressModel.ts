@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 import ExamprogressSchema from './ExamprogressSchema';
-import IExamprogressmodel from './IExamprogressmodel';
+import IExamprogressmodel from './IExamprogressModel';
 
 export const examprogressSchema = new ExamprogressSchema({
     collection: 'examination'

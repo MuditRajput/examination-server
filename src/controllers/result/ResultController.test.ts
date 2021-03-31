@@ -16,7 +16,7 @@ export const getResultsTest = (request) => {
 export const getResultTest = (request) => {
   it('get one result', async () => {
     return request
-      .get('/api/results/6064146b99b83c2dd494e503')
+      .get('/api/results/60644a3254d5941a16942822')
       .set('Authorization', token)
       .expect('Content-Type', /json/)
       .expect(200)
