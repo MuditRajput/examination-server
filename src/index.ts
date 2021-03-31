@@ -4,4 +4,5 @@ console.log(config);
 
 const server = new Server(config);
 
-server.bootstrap().run();
+server.bootstrap();
+server.run();

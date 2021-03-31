@@ -29,4 +29,3 @@ export const users: IUsers[] = [
         reviewerEmail: 'shalu.sharma@successive.tech'
     }
 ];
-console.log(typeof users);

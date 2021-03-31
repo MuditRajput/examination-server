@@ -35,12 +35,10 @@ class ExaminationController {
                 if (questions.length) {
                     questions.forEach(({ questionSet, marks }) => {
                         if (questionSet === originalId) {
-                            console.log(questionSet, marks);
                             maximumMarks = maximumMarks + marks;
                         }
                     });
                 }
-                console.log(maximumMarks);
                 return {subject, description, time, maxAttempts, originalId, maximumMarks};
             });
             const { write } = res.locals;

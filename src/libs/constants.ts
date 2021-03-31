@@ -72,3 +72,6 @@ export const seedExaminationData: ISeedExamination = {
         correctOption: 'Power'
     }]
 };
+
+export const wrongToken = '3h4k1324kh32k4h23412j34k2323jd22lh234y24ypii234y2i4n2hd123re22rgl23hne234';
+export const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJTdWNjZXNzaXZlIFRlY2hub2xvZ2llcyIsImF1ZCI6Ind3dy5zdWNjZXNzaXZlLmluIiwic3ViIjoiTGVhcm4gYW5kIEltcGxlbWVudCIsImVtYWlsIjoiaGVhZC50cmFpbmVyQHN1Y2Nlc3NpdmUudGVjaCIsImlhdCI6MTYxNzE2NTEyMCwiZXhwIjoxNjQ4NzIyNzIwfQ.YE_cQ7ZgHB_pgD0CZ9prfWfTDrAN6Upk0b45Ns2UMds';
