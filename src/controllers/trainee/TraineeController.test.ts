@@ -39,6 +39,35 @@ export const createTraineeTest = (request) => {
         expect(res.body.status).toBe('success');
       });
   });
+  it('create trainee', async () => {
+    return request
+      .post('/api/trainee')
+      .send({
+        email: 'trainee.2@successive.tech',
+        password: 'Qwerty@1'
+      })
+      .set('Authorization', token)
+      .expect('Content-Type', /json/)
+      .expect(422)
+      .then((res) => {
+        expect(res.body.message).toBe('Name is invalid');
+      });
+  });
+  it('create trainee', async () => {
+    return request
+      .post('/api/trainee')
+      .send({
+        email: 'trainee.2@successive.tech',
+        password: 'Qwerty@1',
+        name: '12'
+      })
+      .set('Authorization', token)
+      .expect('Content-Type', /json/)
+      .expect(422)
+      .then((res) => {
+        expect(res.body.message).toBe('Name is invalid');
+      });
+  });
 };
 
 export const updateTraineeTest = (request) => {
@@ -53,9 +82,19 @@ export const updateTraineeTest = (request) => {
       })
       .set('Authorization', token)
       .expect('Content-Type', /json/)
-      .expect(200)
+      .expect(400)
       .then((res) => {
-        expect(res.body.status).toBe('success');
+        expect(res.body.status).toBe(400);
+      });
+  });
+  it('update trainee', async () => {
+    return request
+      .put('/api/trainee')
+      .set('Authorization', token)
+      .expect('Content-Type', /json/)
+      .expect(422)
+      .then((res) => {
+        expect(res.body.message).toBe('originalId is required');
       });
   });
 };
@@ -66,9 +105,9 @@ export const deleteTraineeTest = (request) => {
       .delete('/api/trainee/601b7f029df26436101cf9e7')
       .set('Authorization', token)
       .expect('Content-Type', /json/)
-      .expect(200)
+      .expect(400)
       .then((res) => {
-        expect(res.body.status).toBe('success');
+        expect(res.body.status).toBe(400);
       });
   });
 };

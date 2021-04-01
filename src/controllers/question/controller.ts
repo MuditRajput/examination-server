@@ -128,7 +128,7 @@ class QuestionController {
         try {
             const { id } = req.params;
             const response = await this.questionRepository.delete(id);
-            if (!response) {
+            if (!response.originalId) {
                 next({
                     message: 'Examination delete Failed',
                     error: 'Bad Request',
@@ -151,6 +151,7 @@ class QuestionController {
             const allQuestions = await this.questionRepository.find({ questionSet: id });
             allQuestions.forEach(async(question) => {
                 const response = await this.questionRepository.delete(question.originalId);
+                console.log(response, 'here');
                 if (!response) {
                     next({
                         message: 'Examination delete Failed',

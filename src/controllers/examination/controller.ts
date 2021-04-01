@@ -99,8 +99,8 @@ class ExaminationController {
         try {
             const { id } = req.params;
             const response = await this.examinationRepository.delete(id);
-            if (!response) {
-                next({
+            if (!response.originalId) {
+                return next({
                     message: 'Examination delete Failed',
                     error: 'Bad Request',
                     status: 400

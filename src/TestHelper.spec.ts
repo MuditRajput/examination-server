@@ -4,7 +4,8 @@ import Database from './libs/database';
 import * as supertest from 'supertest';
 import { loginTest, profileTest } from './controllers/user/UserController.test';
 import { getResultsTest, getResultTest } from './controllers/result/ResultController.test';
-import { getQuestionsTest, createQuestionsTest, updateQuestionsTest, deleteQuestionTest } from './controllers/question/QuestionController.test';
+import { getExaminationsTest, createExaminationsTest, updateExaminationsTest, deleteExaminationTest } from './controllers/examination/QuestionController.test';
+import { getQuestionsTest, createQuestionsTest, updateQuestionsTest, deleteQuestionTest, submitQuestionTest } from './controllers/question/QuestionController.test';
 import { getTraineeTest, createTraineeTest, updateTraineeTest, deleteTraineeTest } from './controllers/trainee/TraineeController.test';
 
 const server = new Server(config);
@@ -74,4 +75,24 @@ describe('PUT QUESTIONS API', () => {
 
 describe('DELETE QUESTIONS API', () => {
   deleteQuestionTest(request);
+});
+
+describe('SUBMIT QUESTIONS API', () => {
+  submitQuestionTest(request);
+});
+
+describe('GET EXAMINATIONS API', () => {
+  getExaminationsTest(request);
+});
+
+describe('POST EXAMINATION API', () => {
+  createExaminationsTest(request);
+});
+
+describe('PUT EXAMINATION API', () => {
+  updateExaminationsTest(request);
+});
+
+describe('DELETE EXAMINATION API', () => {
+  deleteExaminationTest(request);
 });

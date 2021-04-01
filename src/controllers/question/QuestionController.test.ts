@@ -64,11 +64,31 @@ export const updateQuestionsTest = (request) => {
       });
   });
 };
+
 export const deleteQuestionTest = (request) => {
   it('delete Question', async () => {
     return request
-      .delete('/api/question/606467093325562c5f7b4c47')
+      .delete('/api/question/606467093325562c5f7b4c4b')
       .set('Authorization', token)
+      .expect('Content-Type', /json/)
+      .expect(400)
+      .then((res) => {
+        expect(res.body.status).toBe(400);
+      });
+  });
+};
+
+export const submitQuestionTest = (request) => {
+  it('submit Question', async () => {
+    return request
+      .post('/api/question/submit')
+      .set('Authorization', token)
+      .send({
+        questionSet: '60644a1554d5941a1694281b',
+        answersList: {
+          '60644a1c54d5941a1694281c': '1'
+        }
+      })
       .expect('Content-Type', /json/)
       .expect(200)
       .then((res) => {

@@ -6,11 +6,6 @@ const Validation = {
             in: ['body'],
             errorMessage: 'Subject is invalid'
         },
-        maximumMarks: {
-            required: false,
-            number: true,
-            in: ['body']
-        },
         description: {
             required: false,
             string: true,
