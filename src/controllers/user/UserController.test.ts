@@ -44,9 +44,9 @@ export const loginTest = (request) => {
     return request
       .post('/api/user/login')
       .expect('Content-Type', /json/)
-      .expect(400)
+      .expect(422)
       .then((res) => {
-          expect((res.body).length).toBe(2);
+          expect(res.body.message).toBe('Password is invalid');
       });
   });
 };

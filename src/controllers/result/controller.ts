@@ -24,7 +24,7 @@ class ResultController {
             const { userData: { originalId } } = res.locals;
             const response = await this.resultRepository.getAll(originalId);
             if (!response.length) {
-                next({
+                return next({
                     message: 'No Results Found',
                     error: 'Bad Request',
                     status: 400
@@ -32,7 +32,7 @@ class ResultController {
             }
             const examResponse = await this.examinationRepository.find();
             if (!examResponse.length) {
-                next({
+                return next({
                     message: 'No Results Found',
                     error: 'Bad Request',
                     status: 400

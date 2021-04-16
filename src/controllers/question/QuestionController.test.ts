@@ -14,6 +14,19 @@ export const getQuestionsTest = (request) => {
         expect(res.body.status).toBe('success');
       });
   });
+  it('get all Questions', async () => {
+    return request
+      .get('/api/question/60644a1554d5941a1694281')
+      .query({
+        submitted: 'true'
+      })
+      .set('Authorization', token)
+      .expect('Content-Type', /json/)
+      .expect(400)
+      .then((res) => {
+        expect(res.body.message).toBe('No questions Found');
+      });
+  });
 };
 
 export const createQuestionsTest = (request) => {
@@ -50,7 +63,7 @@ export const updateQuestionsTest = (request) => {
     return request
       .put('/api/question')
       .send({
-        originalId: '606467093325562c5f7b4c47',
+        originalId: '60791c3e46c4b71e14be58f1',
         dataToUpdate:
           {
             marks : 3,
@@ -61,6 +74,23 @@ export const updateQuestionsTest = (request) => {
       .expect(200)
       .then((res) => {
         expect(res.body.status).toBe('success');
+      });
+  });
+  it('update Questions', async () => {
+    return request
+      .put('/api/question')
+      .send({
+        originalId: '60791c3e46c4b71e14be58f',
+        dataToUpdate:
+          {
+            marks : 3,
+          }
+      })
+      .set('Authorization', token)
+      .expect('Content-Type', /json/)
+      .expect(400)
+      .then((res) => {
+        expect(res.body.message).toBe('Examination Update Failed');
       });
   });
 };
@@ -88,6 +118,19 @@ export const submitQuestionTest = (request) => {
         answersList: {
           '60644a1c54d5941a1694281c': '1'
         }
+      })
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then((res) => {
+        expect(res.body.status).toBe('success');
+      });
+  });
+  it('submit Question', async () => {
+    return request
+      .post('/api/question/submit')
+      .set('Authorization', token)
+      .send({
+        questionSet: '60644a1554d5941a1694281b'
       })
       .expect('Content-Type', /json/)
       .expect(200)

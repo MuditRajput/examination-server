@@ -54,7 +54,7 @@ class QuestionController {
                         questionSet: id, originalId, timeLeft: (Date.now() + (timeLimit * 60000))
                     });
                     if (!response) {
-                        next({
+                        return next({
                             message: 'Time setting failed',
                             error: 'Bad Request',
                             status: 400
@@ -83,7 +83,7 @@ class QuestionController {
                 question = { questionSet: originalId, ...question };
                 const questionResponse = await this.questionRepository.create(question);
                 if (!questionResponse) {
-                    next({
+                    return next({
                         message: 'Examination Creation failed',
                         error: 'Bad Request',
                         status: 400
@@ -108,7 +108,7 @@ class QuestionController {
             const { originalId, dataToUpdate } = req.body;
             const response = await this.questionRepository.update({originalId, dataToUpdate});
             if (!response) {
-                next({
+                return next({
                     message: 'Examination Update Failed',
                     error: 'Bad Request',
                     status: 400
@@ -129,7 +129,7 @@ class QuestionController {
             const { id } = req.params;
             const response = await this.questionRepository.delete(id);
             if (!response.originalId) {
-                next({
+                return next({
                     message: 'Examination delete Failed',
                     error: 'Bad Request',
                     status: 400
@@ -151,9 +151,8 @@ class QuestionController {
             const allQuestions = await this.questionRepository.find({ questionSet: id });
             allQuestions.forEach(async(question) => {
                 const response = await this.questionRepository.delete(question.originalId);
-                console.log(response, 'here');
                 if (!response) {
-                    next({
+                    return next({
                         message: 'Examination delete Failed',
                         error: 'Bad Request',
                         status: 400
@@ -201,7 +200,7 @@ class QuestionController {
         });
         const resultResponse = await this.resultRepository.resultCreate({result: resultList, userId, questionSet});
         if (!resultResponse) {
-            next({
+            return next({
                 message: 'Result Not Saved',
                 error: 'Bad Request',
                 status: 400

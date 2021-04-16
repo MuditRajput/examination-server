@@ -23,7 +23,7 @@ class ExaminationController {
         try {
             const response = await this.examinationRepository.find();
             if (!response) {
-                next({
+                return next({
                     message: 'No Examination Found',
                     error: 'Bad Request',
                     status: 400
@@ -58,7 +58,7 @@ class ExaminationController {
             const { subject, description, time, maxAttempts } = req.body;
             const response = await this.examinationRepository.create({ subject, description, time, maxAttempts });
             if (!response) {
-                next({
+                return next({
                     message: 'Examination Creation failed',
                     error: 'Bad Request',
                     status: 400
@@ -79,7 +79,7 @@ class ExaminationController {
             const { originalId, dataToUpdate } = req.body;
             const response = await this.examinationRepository.update({originalId, dataToUpdate});
             if (!response) {
-                next({
+                return next({
                     message: 'Examination Update Failed',
                     error: 'Bad Request',
                     status: 400

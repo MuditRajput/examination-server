@@ -30,6 +30,21 @@ export const createExaminationsTest = (request) => {
         expect(res.body.status).toBe('success');
       });
   });
+  it('create Examinations with wrong inputs', async () => {
+    return request
+      .post('/api/exam')
+      .send({
+        subject: 'Physics',
+        description: 'testing',
+        maxAttempts: 4
+      })
+      .set('Authorization', token)
+      .expect('Content-Type', /json/)
+      .expect(422)
+      .then((res) => {
+        expect(res.body.message).toBe('time is required');
+      });
+  });
 };
 
 export const updateExaminationsTest = (request) => {
@@ -37,7 +52,7 @@ export const updateExaminationsTest = (request) => {
     return request
       .put('/api/exam')
       .send({
-        originalId: '60655754e9abe033f10cffb2',
+        originalId: '6073f1677c1a5a1c3866a754',
         dataToUpdate:
           {
             time : 3,
@@ -48,6 +63,23 @@ export const updateExaminationsTest = (request) => {
       .expect(200)
       .then((res) => {
         expect(res.body.status).toBe('success');
+      });
+  });
+  it('update Examinations with wrong id', async () => {
+    return request
+      .put('/api/exam')
+      .send({
+        originalId: '6073f1677c1a5a1c3866a75',
+        dataToUpdate:
+          {
+            time : 3,
+          }
+      })
+      .set('Authorization', token)
+      .expect('Content-Type', /json/)
+      .expect(400)
+      .then((res) => {
+        expect(res.body.message).toBe('Examination Update Failed');
       });
   });
 };

@@ -66,7 +66,7 @@ export const getTraineeTest = (request) => {
 export const getOneTraineeTest = (request) => {
   it('get one trainee', async () => {
     return request
-      .get('/api/trainee/602defed287cf212e8bb3811')
+      .get('/api/trainee/601bc410535fb24138b22809')
       .set('Authorization', token)
       .expect('Content-Type', /json/)
       .expect(200)
@@ -138,7 +138,7 @@ export const updateTraineeTest = (request) => {
     return request
       .put('/api/trainee')
       .send({
-        originalId: '606585a3276c5a4966e2e9c7',
+        originalId: '60670dbb9622b71a645134d0',
         dataToUpdate: {
           name: 'trainee 99'
         },
@@ -154,7 +154,7 @@ export const updateTraineeTest = (request) => {
     return request
       .put('/api/trainee')
       .send({
-        originalId: '606585a3276c5a4966e2e9c7',
+        originalId: '6064895eecac7409e8bdc73b',
         dataToUpdate: {
           name: {
             name : 'name 1'
@@ -163,9 +163,9 @@ export const updateTraineeTest = (request) => {
       })
       .set('Authorization', token)
       .expect('Content-Type', /json/)
-      .expect(500)
+      .expect(400)
       .then((res) => {
-        expect(res.body.message).toBe('Internal Server Error');
+        expect(res.body.message).toBe('Update Failed');
       });
   });
   it('update trainee', async () => {

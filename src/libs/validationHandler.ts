@@ -57,11 +57,10 @@ export default (Validation) => (req: Request, res: Response, next: NextFunction 
         });
     });
     if (error.length) {
-        next({
+        return next({
             message: error[0].errorMessage || 'Validation error',
             status: 422,
         });
-        return res.status(400).send(error);
     }
     next ();
 };

@@ -16,12 +16,22 @@ export const getResultsTest = (request) => {
 export const getResultTest = (request) => {
   it('get one result', async () => {
     return request
-      .get('/api/results/60644a3254d5941a16942822')
+      .get('/api/results/6064146b99b83c2dd494e503')
       .set('Authorization', token)
       .expect('Content-Type', /json/)
       .expect(200)
       .then((res) => {
         expect(res.body.status).toBe('success');
+      });
+  });
+  it('get one result with wrong id', async () => {
+    return request
+      .get('/api/results/6064146b99b83c2dd494e50')
+      .set('Authorization', token)
+      .expect('Content-Type', /json/)
+      .expect(400)
+      .then((res) => {
+        expect(res.body.status).toBe(400);
       });
   });
 };
