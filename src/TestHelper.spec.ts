@@ -6,7 +6,7 @@ import { loginTest, profileTest } from './controllers/user/UserController.test';
 import { getResultsTest, getResultTest } from './controllers/result/ResultController.test';
 import { getExaminationsTest, createExaminationsTest, updateExaminationsTest, deleteExaminationTest } from './controllers/examination/ExaminationController.test';
 import { getQuestionsTest, createQuestionsTest, updateQuestionsTest, deleteQuestionTest, submitQuestionTest } from './controllers/question/QuestionController.test';
-import { getTraineeTest, createTraineeTest, updateTraineeTest, deleteTraineeTest } from './controllers/trainee/TraineeController.test';
+import { getTraineeTest, getOneTraineeTest, createTraineeTest, updateTraineeTest, deleteTraineeTest } from './controllers/trainee/TraineeController.test';
 
 const server = new Server(config);
 const app = server.bootstrap();
@@ -39,6 +39,10 @@ describe('PROFILE API', () => {
 
 describe('GET TRAINEE API', () => {
   getTraineeTest(request);
+});
+
+describe('GET ONE TRAINEE API', () => {
+  getOneTraineeTest(request);
 });
 
 describe('POST TRAINEE API', () => {

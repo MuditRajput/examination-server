@@ -1,7 +1,7 @@
-import { token, wrongToken } from '../../libs/constants';
+import { token, wrongToken, noEmailToken, wrongEmailToken } from '../../libs/constants';
 
 export const loginTest = (request) => {
-  it('Login new user', async () => {
+  it('Login new user with correct inputs', async () => {
     return request
       .post('/api/user/login')
       .send({
@@ -14,7 +14,7 @@ export const loginTest = (request) => {
           expect(res.body.status).toBe('success');
       });
   });
-  it('Login new user', async () => {
+  it('Login new user with wrong password', async () => {
     return request
       .post('/api/user/login')
       .send({
@@ -27,7 +27,7 @@ export const loginTest = (request) => {
           expect(res.body.message).toBe('invalid password');
       });
   });
-  it('Login new user', async () => {
+  it('Login new user with invalid email', async () => {
     return request
       .post('/api/user/login')
       .send({
@@ -38,6 +38,15 @@ export const loginTest = (request) => {
       .expect(403)
       .then((res) => {
           expect(res.body.message).toBe('invalid email');
+      });
+  });
+  it('Login new user without email or password', async () => {
+    return request
+      .post('/api/user/login')
+      .expect('Content-Type', /json/)
+      .expect(400)
+      .then((res) => {
+          expect((res.body).length).toBe(2);
       });
   });
 };
@@ -53,7 +62,7 @@ export const profileTest = (request) => {
           expect(res.body.status).toBe('success');
       });
   });
-  it('user profile', async () => {
+  it('profile with wrong token', async () => {
     return request
       .get('/api/user/me')
       .set('Authorization', wrongToken)
@@ -61,6 +70,36 @@ export const profileTest = (request) => {
       .expect(403)
       .then((res) => {
           expect(res.body.message).toBe('User is Invalid');
+      });
+  });
+  it('profile without token', async () => {
+    return request
+      .get('/api/user/me')
+      .set('Authorization', '')
+      .expect('Content-Type', /json/)
+      .expect(403)
+      .then((res) => {
+          expect(res.body.message).toBe('Token not found');
+      });
+  });
+  it('profile with token containing no email', async () => {
+    return request
+      .get('/api/user/me')
+      .set('Authorization', noEmailToken)
+      .expect('Content-Type', /json/)
+      .expect(403)
+      .then((res) => {
+          expect(res.body.message).toBe('Email  not in token');
+      });
+  });
+  it('profile with token containing wrong email', async () => {
+    return request
+      .get('/api/user/me')
+      .set('Authorization', wrongEmailToken)
+      .expect('Content-Type', /json/)
+      .expect(403)
+      .then((res) => {
+          expect(res.body.message).toBe('User is empty');
       });
   });
 };
