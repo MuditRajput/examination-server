@@ -4,7 +4,8 @@
   "description": "training",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --forceExit --runInBand --detectOpenHandles",
+    "test:c": "nyc jest --forceExit --runInBand --detectOpenHandles --coverage",
     "start:extra": "babel-node extra",
     "start:extraTs": "tsc-watch --project . --onSuccess \"npm run nodemon\"",
     "start": "tsc-watch --project . --onSuccess \"npm run nodemon\"",
