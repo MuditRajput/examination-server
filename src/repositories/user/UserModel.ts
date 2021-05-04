@@ -97,6 +97,129 @@ export const userSchema = new UserSchema({
  *       status:
  *         type: string
  *         example: success
+ *   resultsGETResponse:
+ *     type: object
+ *     properties:
+ *       message:
+ *         type: string
+ *         example: Results fetched successfully
+ *       data:
+ *         type: array
+ *         items:
+ *          $ref: '#/definitions/result'
+ *       status:
+ *         type: string
+ *         example: success
+ *   resultGETResponse:
+ *     type: object
+ *     properties:
+ *       message:
+ *         type: string
+ *         example: Results fetched successfully
+ *       data:
+ *         $ref: '#/definitions/result'
+ *       status:
+ *         type: string
+ *         example: success
+ *   questionPOSTResponse:
+ *     type: object
+ *     properties:
+ *       message:
+ *         type: string
+ *         example: Questions Created successfully
+ *       data:
+ *         $ref: '#/definitions/questionInData'
+ *       status:
+ *         type: string
+ *         example: success
+ *   examinationPOSTResponse:
+ *     type: object
+ *     properties:
+ *       message:
+ *         type: string
+ *         example: Examination Created successfully
+ *       data:
+ *         $ref: '#/definitions/examination'
+ *       status:
+ *         type: string
+ *         example: success
+ *   examinationPUTResponse:
+ *     type: object
+ *     properties:
+ *       message:
+ *         type: string
+ *         example: Examination Updated successfully
+ *       data:
+ *         $ref: '#/definitions/examination'
+ *       status:
+ *         type: string
+ *         example: success
+ *   questionPUTResponse:
+ *     type: object
+ *     properties:
+ *       message:
+ *         type: string
+ *         example: Question updated successfully
+ *       data:
+ *         $ref: '#/definitions/Question'
+ *       status:
+ *         type: string
+ *         example: success
+ *   questionGETResponse:
+ *     type: object
+ *     properties:
+ *       message:
+ *         type: string
+ *         example: Questions fetched successfully
+ *       data:
+ *         type: array
+ *         items:
+ *           $ref: '#/definitions/Question'
+ *       status:
+ *         type: string
+ *         example: success
+ *   examsGETResponse:
+ *     type: object
+ *     properties:
+ *       message:
+ *         type: string
+ *         example: Examination fetched successfully
+ *       data:
+ *         type: array
+ *         items:
+ *           $ref: '#/definitions/examination'
+ *       status:
+ *         type: string
+ *         example: success
+ *   questionDELETEResponse:
+ *     type: object
+ *     properties:
+ *       message:
+ *         type: string
+ *         example: Question deleted successfully
+ *       data:
+ *         type: object
+ *       status:
+ *         type: string
+ *         example: success
+ *   examinationDELETEResponse:
+ *     type: object
+ *     properties:
+ *       message:
+ *         type: string
+ *         example: Examination deleted successfully
+ *       data:
+ *         type: object
+ *       status:
+ *         type: string
+ *         example: success
+ *   questionInData:
+ *     type: object
+ *     properties:
+ *       questions:
+ *         type: array
+ *         items:
+ *           $ref: '#/definitions/Question'
  *   userWithCount:
  *     type: object
  *     properties:
@@ -154,6 +277,34 @@ export const userSchema = new UserSchema({
  *         type: string
  *         example: PasswordHere
  *         description: Password created by user
+ *   CREATEQuestionInput:
+ *     type: object
+ *     required:
+ *       - originalId
+ *       - questionList
+ *     properties:
+ *       originalId:
+ *         type: string
+ *         example: a3d36dsv75vs4d5cccf4
+ *         description: id of the questionSet
+ *       questionList:
+ *         type: array
+ *         items:
+ *           $ref: '#/definitions/Question'
+ *   SUBMITQuestionInput:
+ *     type: object
+ *     required:
+ *       - questionSet
+ *       - answerList
+ *     properties:
+ *       questionSet:
+ *         type: string
+ *         example: a3d36dsv75vs4d5cccf4
+ *         description: id of the questionSet
+ *       answerList:
+ *         type: array
+ *         items:
+ *           $ref: '#/definitions/AnswersList'
  *   PUTInput:
  *     type: object
  *     required:
@@ -166,6 +317,30 @@ export const userSchema = new UserSchema({
  *         description: Original Id of the user
  *       dataToUpdate:
  *         $ref: '#/definitions/dataToUpdate'
+ *   PUTQuestionInput:
+ *     type: object
+ *     required:
+ *       - originalId
+ *       - dataToUpdate
+ *     properties:
+ *       originalId:
+ *         type: string
+ *         example: aad7asd90DFf8a0sd
+ *         description: Original Id of the question
+ *       dataToUpdate:
+ *         $ref: '#/definitions/Question'
+ *   PUTExaminationInput:
+ *     type: object
+ *     required:
+ *       - originalId
+ *       - dataToUpdate
+ *     properties:
+ *       originalId:
+ *         type: string
+ *         example: aad7asd90DFf8a0sd
+ *         description: Original Id of the question
+ *       dataToUpdate:
+ *         $ref: '#/definitions/examination'
  *   dataToUpdate:
  *     type: object
  *     properties:
@@ -212,6 +387,97 @@ export const userSchema = new UserSchema({
  *           type: string
  *           example: 87ad9f39n88.auyasidasdsda12kxnb38sn22239exd.23as9cd
  *           description: Password created by user
+ *         createdAt:
+ *           type: string
+ *           example: "2020-11-25T04:58:44.674Z"
+ *           description: Date at which the user is created
+ *   Question:
+ *     type: object
+ *     properties:
+ *       question:
+ *         type: string
+ *         example: this is a question
+ *         description: Question
+ *       correctOption:
+ *         type: array
+ *         example: ["2"]
+ *       options:
+ *         type: array
+ *         example: ["2","4"]
+ *       marks:
+ *         type: number
+ *         example: 2
+ *         description: marks of each question
+ *   examination:
+ *     type: object
+ *     properties:
+ *       originalId:
+ *         type: string
+ *         example: 6066e8d09622b71a645134a9
+ *         description: Id of exam
+ *       subject:
+ *         type: string
+ *         example: Physics
+ *       description:
+ *         type: string
+ *         example: Physics exam for 11th class
+ *       maximumMarks:
+ *         type: number
+ *         example: 20
+ *         description: marks of questions
+ *       time:
+ *         type: number
+ *         example: 30
+ *         description: marks of questions
+ *       maximumAttempts:
+ *         type: number
+ *         example: 2
+ *         description: maximum number of attempts
+ *   AnswersList:
+ *     type: object
+ *     properties:
+ *       aad7asd90DFf8a0sd:
+ *         type: array
+ *         example: ["2"]
+ *         description: Question id and submitted answer
+ *       as33sd90DFf8a0sd:
+ *         type: array
+ *         example: ["4","6"]
+ *         description: Question id and submitted answer
+ *       a7d2kj34js333ds22sd:
+ *         type: array
+ *         example: ["8"]
+ *         description: Question id and submitted answer
+ *   result:
+ *     type: object
+ *     properties:
+ *         originalId:
+ *           type: string
+ *           example: aad7asd90DFf8a0sd
+ *           description: Original Id of the user
+ *         userId:
+ *           type: string
+ *           example: aad7asd90DFf8a0sd
+ *           description: Original Id of the user
+ *         _id:
+ *           type: string
+ *           example: aad7asd90DFf8a0sd
+ *           description: Id at time of create or update
+ *         questionSet:
+ *           type: string
+ *           example: Physics
+ *           description: Subject
+ *         result:
+ *           type: object
+ *           properties:
+ *             as87jhg34s9d3vsdh7:
+ *               type: string
+ *               example: [0,["4"],["9"],1]
+ *               description: obtained marks, submitted answer, correct answer, maximum marks
+ *             a78esd88s7e873sds3x:
+ *               type: string
+ *               example: [1,["9","11"],["9","11"],1]
+ *               description: obtained marks, submitted answer, correct answer, maximum marks
  *         createdAt:
  *           type: string
  *           example: "2020-11-25T04:58:44.674Z"
